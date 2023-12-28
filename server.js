@@ -53,22 +53,26 @@ app.delete('/trips/:id', async (req, res) => {
     }
 });
 
-
-app.get('/reviews', async (req, res) => {
+app.get('/trips/:tripId/reviews', async (req, res) => {
     try {
-        const reviews = await Review.find();
+        const { tripId } = req.params;
+        const reviews = await Review.find({ tripId: tripId });
+        console.log(reviews)
         res.json(reviews);
     } catch (err) {
+        console.log(err)
         res.status(500).json({ message: err.message });
     }
 });
 
 app.post('/reviews', async (req, res) => {
     try {
+        console.log(req.body)
         const newReview = new Review(req.body);
         const savedReview = await newReview.save();
         res.status(201).json(savedReview);
     } catch (err) {
+        console.log(err)
         res.status(500).json({ message: err.message });
     }
 });
